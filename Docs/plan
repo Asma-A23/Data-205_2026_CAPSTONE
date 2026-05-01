@@ -1,0 +1,144 @@
+
+Project Plan: Poverty and Educational Attainment in Montgomery County, Maryland
+
+Data:
+
+The primary data for this project will come from three datasets I picked out, most of 
+which are focused on educational outcomes and other socioeconomic indicators. The information 
+in these datasets is drawn from Maryland communities, either from Montgomery County 
+exclusively, or county-wide across the state. 
+
+Dataset 1:
+
+The first dataset comes from the Maryland Open Data portal. This dataset contains many 
+important socioeconomic factors, all of which will be helpful for identifying poverty across 
+Maryland. This dataset also contains information based on multiple counties across Maryland, 
+rather than being limited to just Montgomery County. Some of the key variables include, poverty 
+rate, median income, unemployment rate, and several different variables that contain informaiton 
+regarding educational attainment. The primary use of this dataset will be to run a comparative
+analysis across Maryland counties, likely to study wealthy areas next to poverty stricken areas, 
+along with different demographics. 
+
+The dataset can be accessed here: https://opendata.maryland.gov/Demographic/Maryland-
+Counties-Socioeconomic-Characteristics-AC/is7h-kp6x/about_data
+
+Despite how rich this dataset is with information, there are still some limits. One issue would be 
+that there is no specification for schools across each district, which would be extremely helpful. 
+On top of that, there will also need to be filtering done to make sure there is consistency in the 
+data over the years. Even with these limitations though, the dataset is generally still a strong one.
+
+Dataset 2:
+
+The second dataset I was able to access comes from Datacensus.gov. Most of its data is 
+sourced from the U.S census American Community Survey. Essentially, this dataset takes a look 
+at the poverty rates, income levels, and general demographic characteristics for Montgomery 
+County. This dataset will be used to provide most of the poverty and income indicators in the 
+project. The key variables used would be poverty rates, child poverty rate, median household 
+income, and adults without high school diplomas. 
+
+The dataset can be accessed at: 
+https://data.census.gov/table/ACSST5Y2022.S1701?q=Montgomery+County+Maryland+povert
+y
+
+Asma Abbas
+Professor Perine
+DATA 205
+3/24/2026
+
+Although this dataset provides valuable insight for Montgomery County specifically, 
+there are a couple of issues that come with it as well. Similar to the previous dataset, the data is 
+not linked to specific schools, which would be helpful to know when coming up with solutions. 
+Though I do have access to a dataset with school-wide information, using both of these datasets 
+will require some alignment. However, even with these issues, the dataset is still very helpful. 
+
+Dataset 3:
+
+The third dataset took a little bit of digging to find, but does have valuable information. I 
+was able to find it directly on the Montgomery County Public Schools website. It contains many 
+details about high schools in Montgomery County. Some of the key variables are graduation 
+rates, dropout rates, attendance rates, and FARM (Free and Reduced Meals) participation. This 
+dataset will be a primary source of information for the project, given its data on educational 
+outcomes like graduation rates. 
+
+The dataset can be downloaded here: https://www.montgomeryschoolsmd.org/school-profiles
+
+This is a relatively small dataset, so it does come with a few issues. For one, the time-
+span is very limited, which could narrow down the project. There is also a lack of detail when it 
+comes to demographics. However, with the help of the other two datasets, it is possible to work 
+around these issues to answer the project questions. 
+
+Research Goals and Questions:
+
+The primary goal of this project is to analyze how poverty and economic disadvantages 
+impact high school graduation rates in Montgomery County, and to compare these relationships 
+to other areas across Maryland. 
+
+Questions, and (potentially) how to go about answering them: 
+
+1. How strongly are poverty indicators associated with high school graduation rates in 
+Montgomery County?
+a. I will answer this question by doing a correlation analysis and linear regression 
+between the variables of poverty rate (from the second dataset) and graduation 
+rates (the MCPS dataset)
+2. How does this relationship compare across different counties in Maryland?
+a. I will do a cross-county regression for dataset 3, and to visualize the answer I will 
+make scatterplots.
+3. How does this relationship change when accounting for factors like race/ethnicity and 
+demographics?
+a. Multiple regression including demographic control variables. 
+4. Are there specific geographic areas where poverty is linked to lower graduation rates?
+a. Using dataset 2, I will create heatmaps to visualize this relationship.
+5. Can income indicators predict graduation outcomes?
+a. A regression model 
+a. Correlation and simple linear regression using dataset 3.
+a. Correlation and regression between dropout rates and poverty indicators, possibly 
+a graph as well.
+a. Multivariate regression, while having attendance as an intermediate variable.
+a. Compare means and make visualization of differences with bar graphs. 
+6. What is the relationship between FARM participation and graduation rates?
+7. Do schools with a higher dropout rate also show stronger links to poverty?
+8. How does attendance rate relate to both poverty, and graduation rates?
+9. How does Montgomery County compare to state averages in educational equity?
+Tools and steps:
+
+The tools I will be using consist of R studio and packages like tidyverse, ggplot2, and potentially 
+tableau (still deciding)
+
+♦ Data ingestion and cleaning
+o Import datasets using read.csv
+o Filter out missing values
+o Align datasets (challenge)
+♦ Exploratory Data Analysis (EDA):
+o Assess summary statistics (things like the mean, median, and distributions of 
+different variables)
+o Make different visualizations (ones to represent the data)
+♦ Proper Analysis:
+o Lots of correlation analysis’
+o Linear and multiple regression models (challenge)
+o Comparing different counties 
+♦ Visualizations:
+o Scatterplots (poverty and graduation)
+o Heatmaps (distribution of poverty)
+o Bar graphs (comparison of different counties)
+Risks, limitations, and challenges:
+
+As I’ve stated in past assignments, I’ve never done a project of this scale before. Mapping 
+everything out and understanding how I can go about it was a hurdle in itself, but I hope to learn 
+a lot from the effort I will put into this project. There are limitations for the datasets like 
+alignments and short span of years, but I’m aware of these issues and will do my best to work 
+around them. I will filter the data as necessary, examine different relationships, and run a 
+thorough analysis in order to answer my questions. 
+
+Milestones and timeline: 
+
+1. Week (1): data collection, and cleaning
+a. Importing all of the datasets, and cleaning them accordingly.
+2. Week (2): Exploratory Data Analysis
+a. Introduce summary statistics, along with fitting visualizations.
+3. Week (3): Statistical analysis
+a. Begin to answer questions, like correlations, and make regression models
+4. Week (4): Proper Analysis and more comparisons
+a. Conduct county-level comparisons, and look at demographic patterns.
+5. Week (5): Final touches
+a. Look at findings, and create solutions. Polish up any visualizations, and present 
+project.
