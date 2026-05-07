@@ -108,7 +108,7 @@ ggplot(MD_clean, aes(x = reorder(county, poverty_rate),
     y = "Poverty Rate (%)",
     fill = "Median Income"
   ) +
-  theme_minimal()
+  theme_classic()
 ```
 
 
@@ -139,7 +139,7 @@ ggplot(MCPS_clean, aes(x = FARMS_rate, y = grad_rate, color = total)) +
     y = "Dropout Rate",
     color = "Graduation Rate"
   ) +
-  theme_minimal()
+  theme_get()
 ```
 
 
