@@ -1,1 +1,131 @@
+## loading the libraries
 
+```{r}
+library(tidyverse)
+library(janitor)
+library(cheapr)
+library(maps)
+library(plotly)
+library(ggrepel)
+```
+
+
+
+## Ingesting data
+
+#step 1: importing the datasets
+
+
+
+```{r}
+setwd("C:/Users/Saima Abbas/Desktop/CAPSTONE DOCS")
+MD_counties <-read_csv("Maryland_Counties_Socioeconomic_Characteristics__ACS_5-yr_Estimates_2022_.csv")
+MCPS <-read_csv("hs_demographic_other_information.csv")
+census_raw <-read_csv("ACSST1Y2024.S1701-2026-05-02T232952.csv")
+```
+
+
+
+## Cleaning (1)
+
+#renaming variables
+
+census:
+
+```{r}
+census_clean <- census_raw |>
+  rename(
+    category = `Label (Grouping)`,
+    total = `Montgomery County, Maryland!!Total!!Estimate`,
+    below_poverty = `Montgomery County, Maryland!!Below poverty level!!Estimate`,
+    poverty_percent = `Montgomery County, Maryland!!Percent below poverty level!!Estimate`
+  )
+```
+
+
+```{r}
+census_clean <- census_clean |>
+  filter(!is.na(poverty_percent))
+```
+
+```{r}
+census_clean <- census_clean |>
+  mutate(
+    poverty_percent = as.numeric(gsub("%", "", poverty_percent))
+  )
+```
+
+
+
+```{r}
+census_clean <- census |> 
+  rename(
+    poverty_rate = `Percent below poverty level`,
+    county = `Geographic Area Name`
+  ) |> 
+  filter(str_detect(county, "Montgomery"))
+```
+
+
+
+
+## MD_counties:
+
+```{r}
+MD_counties <- clean_names(MD_counties)
+MCPS <- clean_names(MCPS)
+```
+
+
+```{r}
+colnames(MD_counties)
+```
+
+
+```{r}
+MD_counties <- MD_counties |>
+  rename(
+    county = jurisdictions,
+    poverty_rate = percent_families_in_poverty,
+    median_income = median_household_income,
+    unemployment_rate = unemployment_rate
+  )
+```
+
+
+```{r}
+MD_clean <- MD_counties |>
+  filter(!is.na(poverty_rate))
+```
+
+```{r}
+nrow(MD_clean)
+```
+
+
+## MCPS:
+
+
+```{r}
+MCPS <- MCPS |>
+  rename(
+    school = school_name,
+    grad_rate = graduation_rate,
+    dropout_rate = dropout_rate,
+    attendance_rate = attendance_rate,
+    FARMS_rate = farms
+  )
+```
+
+
+
+```{r}
+colnames(MCPS) 
+```
+
+
+
+```{r}
+MCPS_clean <- MCPS |>
+  filter(!is.na(grad_rate), !is.na(FARMS_rate))
+nrow(MCPS_clean)
