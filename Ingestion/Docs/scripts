@@ -57,14 +57,15 @@ census_clean <- census_clean |>
 
 
 
+
 ```{r}
 census_clean <- census |> 
   rename(
-    poverty_rate = `Percent below poverty level`,
-    county = `Geographic Area Name`
-  ) |> 
-  filter(str_detect(county, "Montgomery"))
+    poverty_rate = `Montgomery County, Maryland!!Percent below poverty level!!Estimate`,
+    demographic = `Label (Grouping)`)
 ```
+
+
 
 
 
@@ -73,7 +74,6 @@ census_clean <- census |>
 
 ```{r}
 MD_counties <- clean_names(MD_counties)
-MCPS <- clean_names(MCPS)
 ```
 
 
@@ -107,6 +107,11 @@ nrow(MD_clean)
 
 
 ```{r}
+MCPS <- clean_names(MCPS)
+```
+
+
+```{r}
 MCPS <- MCPS |>
   rename(
     school = school_name,
@@ -129,3 +134,4 @@ colnames(MCPS)
 MCPS_clean <- MCPS |>
   filter(!is.na(grad_rate), !is.na(FARMS_rate))
 nrow(MCPS_clean)
+```
