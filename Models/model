@@ -1,1 +1,6 @@
 
+## One Model
+```{r}
+model_q6 <- lm(poverty_rate ~ median_income, data = combined_county)
+summary(model_q6)
+```
