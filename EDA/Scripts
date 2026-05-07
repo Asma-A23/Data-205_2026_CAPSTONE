@@ -162,3 +162,14 @@ ggplot(MD_clean, aes(x = unemployment_rate, y = poverty_rate)) +
   ) +
   theme_minimal()
 ```
+
+```{r}
+ggplot(MD_clean |> arrange(median_income), 
+       aes(x = reorder(county, median_income), y = median_income, group = 1)) +
+  geom_line() +
+  geom_point() +
+  coord_flip() +
+  labs(
+    title = "Income Trend Across Counties"
+  )
+```
