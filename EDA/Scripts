@@ -1,1 +1,164 @@
+##summary stats:
 
+## mcps
+
+```{r}
+summary(MCPS_clean$grad_rate)
+```
+
+```{r}
+summary(MCPS_clean$grad_rate)
+```
+
+```{r}
+summary(MCPS_clean$FARMS_rate)
+```
+
+
+
+#Mean, Median and standard Deviation
+```{r}
+MCPS_clean |>
+  summarise(
+    mean_grad = mean(grad_rate, na.rm = TRUE),
+    median_grad = median(grad_rate, na.rm = TRUE),
+    sd_grad = sd(grad_rate, na.rm = TRUE),
+    
+    mean_farms = mean(FARMS_rate, na.rm = TRUE),
+    median_farms = median(FARMS_rate, na.rm = TRUE),
+    sd_farms = sd(FARMS_rate, na.rm = TRUE)
+  )
+```
+
+
+
+
+## MD
+
+```{r}
+summary(MD_clean$poverty_rate)
+```
+
+```{r}
+summary(MD_clean$median_income)
+```
+
+
+```{r}
+summary(MD_clean)
+```
+
+
+```{r}
+MD_clean |>
+  summarise(
+    mean_poverty = mean(poverty_rate, na.rm = TRUE),
+    median_poverty = median(poverty_rate, na.rm = TRUE),
+    sd_poverty = sd(poverty_rate, na.rm = TRUE),
+
+    mean_income = mean(median_income, na.rm = TRUE),
+    median_income = median(median_income, na.rm = TRUE),
+    sd_income = sd(median_income, na.rm = TRUE),
+
+    mean_unemployment = mean(unemployment_rate, na.rm = TRUE),
+    median_unemployment = median(unemployment_rate, na.rm = TRUE),
+    sd_unemployment = sd(unemployment_rate, na.rm = TRUE)
+  )
+```
+
+
+
+## census(?)
+
+
+
+
+
+## GRAPHS
+
+# How does farm participation impact graduation rates?
+
+```{r}
+ggplot(MCPS_clean, aes(x = FARMS_rate, y = grad_rate, color = attendance_rate)) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(method = "lm", color = "black", se = FALSE) +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(
+    title = "FARMS vs Graduation (Colored by Attendance)",
+    x = "FARMS Rate (Poverty Proxy)",
+    y = "Graduation Rate",
+    color = "Attendance Rate"
+  ) +
+  theme_minimal()
+```
+
+
+## How does median income and poverty vary across the state?
+
+```{r}
+ggplot(MD_clean, aes(x = reorder(county, poverty_rate), 
+                     y = poverty_rate, 
+                     fill = median_income)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  labs(
+    title = "Poverty Rate by County (Colored by Income)",
+    x = "County",
+    y = "Poverty Rate (%)",
+    fill = "Median Income"
+  ) +
+  theme_minimal()
+```
+
+
+map
+
+```{r}
+ggplot(md_joined) +
+  geom_sf(aes(fill = `Percent Families in Poverty`), color = "white") +
+  scale_fill_gradient(low ="lightblue", high = "darkblue", na.value = "gray") +
+  labs(
+    title = "Poverty Rate by County (Maryland)",
+    fill = "Poverty Rate (%)"
+  ) +
+  theme_minimal()
+```
+
+
+## How does farms correlate to the dropout rate?
+
+```{r}
+ggplot(MCPS_clean, aes(x = FARMS_rate, y = grad_rate, color = total)) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(method = "lm", color = "black", se = FALSE) +
+  scale_color_gradient(low = "lightpink", high = "darkred") +
+  labs(
+    title = "FARMS vs Dropout (Colored by Graduation Rate)",
+    x = "FARMS Rate",
+    y = "Dropout Rate",
+    color = "Graduation Rate"
+  ) +
+  theme_minimal()
+```
+
+
+
+## correlation analysis
+
+```{r}
+MD_clean |> 
+  select(poverty_rate, median_income, unemployment_rate) |>
+  cor(use = "complete.obs")
+```
+
+
+```{r}
+ggplot(MD_clean, aes(x = unemployment_rate, y = poverty_rate)) +
+  geom_point(color = "darkred", size = 3) +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Unemployment vs Poverty (Maryland Counties)"
+  ) +
+  theme_minimal()
+```
