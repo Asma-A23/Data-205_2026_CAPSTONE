@@ -1,6 +1,80 @@
+## 7. Regression models
 
-## One Model
 ```{r}
-model_q6 <- lm(poverty_rate ~ median_income, data = combined_county)
-summary(model_q6)
+MCPS_clean <- MCPS_clean |>
+  mutate(
+    grad_rate =
+      as.numeric(gsub("[^0-9.]", "", grad_rate)),
+
+    FARMS_rate =
+      as.numeric(gsub("[^0-9.]", "", FARMS_rate)),
+
+    dropout_rate =
+      as.numeric(gsub("[^0-9.]", "", dropout_rate)),
+
+    attendance_rate =
+      as.numeric(gsub("[^0-9.]", "", attendance_rate))
+  )
+```
+
+
+```{r}
+MCPS_model <- MCPS_clean |>
+  filter(
+    !is.na(grad_rate),
+    !is.na(FARMS_rate),
+    !is.na(dropout_rate),
+    !is.na(attendance_rate)
+  )
+```
+
+
+```{r}
+final_model <- lm(
+  grad_rate ~ FARMS_rate + attendance_rate + dropout_rate,
+  data = MCPS_model
+)
+
+summary(final_model)
+```
+
+```{r}
+MCPS_model <- MCPS_model |>
+  mutate(
+    predicted_grad = predict(final_model)
+  )
+```
+
+
+
+```{r}
+ggplot(MCPS_model,
+       aes(x = grad_rate,
+           y = predicted_grad)) +
+  geom_point(color = "darkblue", size = 3) +
+  geom_abline(slope = 1,
+              intercept = 0,
+              color = "red",
+              linetype = "dashed") +
+  labs(
+    title = "Actual vs Predicted Graduation Rates",
+    x = "Actual Graduation Rate",
+    y = "Predicted Graduation Rate"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+summary(final_model)$r.squared
+```
+
+
+```{r}
+MCPS_model <- MCPS_model |>
+  mutate(
+    residual = grad_rate - predicted_grad)
+```
+
+```{r}
+summary(MCPS_model)
 ```
