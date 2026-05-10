@@ -1,4 +1,4 @@
-## loading the libraries
+## 1. Loading the libraries
 
 ```{r}
 library(tidyverse)
@@ -7,15 +7,15 @@ library(cheapr)
 library(maps)
 library(plotly)
 library(ggrepel)
+library(ggplot2)
+library(leaflet)
+library(sf)
+library(tigris)
 ```
 
 
 
-## Ingesting data
-
-#step 1: importing the datasets
-
-
+## 2. Ingesting the data
 
 ```{r}
 setwd("C:/Users/Saima Abbas/Desktop/CAPSTONE DOCS")
@@ -24,50 +24,47 @@ MCPS <-read_csv("hs_demographic_other_information.csv")
 census_raw <-read_csv("ACSST1Y2024.S1701-2026-05-02T232952.csv")
 ```
 
+## 3. Cleaning
 
-
-## Cleaning (1)
+## Cleaning 
 
 #renaming variables
 
 census:
 
+
 ```{r}
 census_clean <- census_raw |>
   rename(
-    category = `Label (Grouping)`,
-    total = `Montgomery County, Maryland!!Total!!Estimate`,
-    below_poverty = `Montgomery County, Maryland!!Below poverty level!!Estimate`,
-    poverty_percent = `Montgomery County, Maryland!!Percent below poverty level!!Estimate`
-  )
-```
-
-
-```{r}
-census_clean <- census_clean |>
-  filter(!is.na(poverty_percent))
-```
-
-```{r}
-census_clean <- census_clean |>
+    demographic = `Label (Grouping)`,
+    poverty_rate = `Montgomery County, Maryland!!Percent below poverty level!!Estimate`
+  ) |>
+  filter(!is.na(poverty_rate)) |>
   mutate(
-    poverty_percent = as.numeric(gsub("%", "", poverty_percent))
-  )
+    poverty_rate = as.numeric(gsub("%", "", poverty_rate)))
+```
+
+removing missing values
+
+```{r}
+census_clean <- census_clean |>
+  filter(!is.na(poverty_rate)) |>
+  na.omit(demographic)
 ```
 
 
+
+reshaping
+
+```{r}
+poverty_col <- colnames(census_raw)[str_detect(colnames(census_raw), "Percent")]
+```
 
 
 ```{r}
-census_clean <- census |> 
-  rename(
-    poverty_rate = `Montgomery County, Maryland!!Percent below poverty level!!Estimate`,
-    demographic = `Label (Grouping)`)
+census_clean <- census_raw |>
+  rename(poverty_percent = all_of(poverty_col))
 ```
-
-
-
-
 
 
 ## MD_counties:
@@ -76,11 +73,9 @@ census_clean <- census |>
 MD_counties <- clean_names(MD_counties)
 ```
 
-
 ```{r}
 colnames(MD_counties)
 ```
-
 
 ```{r}
 MD_counties <- MD_counties |>
@@ -92,7 +87,6 @@ MD_counties <- MD_counties |>
   )
 ```
 
-
 ```{r}
 MD_clean <- MD_counties |>
   filter(!is.na(poverty_rate))
@@ -102,14 +96,11 @@ MD_clean <- MD_counties |>
 nrow(MD_clean)
 ```
 
-
 ## MCPS:
-
 
 ```{r}
 MCPS <- clean_names(MCPS)
 ```
-
 
 ```{r}
 MCPS <- MCPS |>
@@ -122,16 +113,16 @@ MCPS <- MCPS |>
   )
 ```
 
-
-
 ```{r}
 colnames(MCPS) 
 ```
-
-
 
 ```{r}
 MCPS_clean <- MCPS |>
   filter(!is.na(grad_rate), !is.na(FARMS_rate))
 nrow(MCPS_clean)
 ```
+
+
+
+
