@@ -3,12 +3,9 @@
 ```{r}
 library(tidyverse)
 library(janitor)
-library(cheapr)
 library(maps)
-library(plotly)
 library(ggrepel)
 library(ggplot2)
-library(leaflet)
 library(sf)
 library(tigris)
 ```
@@ -474,6 +471,3 @@ MCPS_model <- MCPS_model |>
 summary(MCPS_model)
 ```
 
-## 8. Geographic analysis and maps
-
-## end ?
