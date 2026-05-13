@@ -1,24 +1,6 @@
 ## 7. Regression models
 
 ```{r}
-MCPS_clean <- MCPS_clean |>
-  mutate(
-    grad_rate =
-      as.numeric(gsub("[^0-9.]", "", grad_rate)),
-
-    FARMS_rate =
-      as.numeric(gsub("[^0-9.]", "", FARMS_rate)),
-
-    dropout_rate =
-      as.numeric(gsub("[^0-9.]", "", dropout_rate)),
-
-    attendance_rate =
-      as.numeric(gsub("[^0-9.]", "", attendance_rate))
-  )
-```
-
-
-```{r}
 MCPS_model <- MCPS_clean |>
   filter(
     !is.na(grad_rate),
@@ -27,7 +9,6 @@ MCPS_model <- MCPS_clean |>
     !is.na(attendance_rate)
   )
 ```
-
 
 ```{r}
 final_model <- lm(
@@ -44,8 +25,6 @@ MCPS_model <- MCPS_model |>
     predicted_grad = predict(final_model)
   )
 ```
-
-
 
 ```{r}
 ggplot(MCPS_model,
@@ -67,7 +46,6 @@ ggplot(MCPS_model,
 ```{r}
 summary(final_model)$r.squared
 ```
-
 
 ```{r}
 MCPS_model <- MCPS_model |>
