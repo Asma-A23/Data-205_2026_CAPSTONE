@@ -95,11 +95,7 @@ MCPS <- clean_names(MCPS)
 ```{r}
 MCPS <- MCPS |>
   rename(
-    school = school_name,
-    grad_rate = graduation_rate,
-    dropout_rate = dropout_rate,
-    attendance_rate = attendance_rate,
-    FARMS_rate = farms
+    FARMS_rate = farms_rate
   )
 ```
 
@@ -262,6 +258,19 @@ ggplot(md_joined) +
   ) +
   theme_minimal()
 ```
+```{r}
+ggplot(md_joined) +
+  geom_sf(aes(fill = `high_school_no_diploma`), color = "white") +
+  scale_fill_gradient(low ="lightpink", high = "purple", na.value = "gray") +
+  geom_sf_text(aes(label = county), color = "darkred", size = 3) +
+  labs(
+    title = "Population Without High School Diploma",
+    fill = "No Diploma"
+  ) +
+  theme_minimal()
+```
+
+
 
 ```{r}
 ggplot(md_joined) +
@@ -276,11 +285,28 @@ ggplot(md_joined) +
 
 ## How does farms correlate to the dropout rate?
 
+
+
+
 ```{r}
-ggplot(MCPS_clean, aes(x = FARMS_rate, y = grad_rate, color = total)) +
+MCPS_clean <- MCPS_clean |>
+  mutate(dropout_rate = as.numeric(dropout_rate))
+```
+
+```{r}
+MCPS_clean <- MCPS_clean |>
+  mutate(
+    grad_rate = as.numeric(gsub("\\?", "", grad_rate)),
+    dropout_rate = as.numeric(gsub("\\?", "", dropout_rate))
+  )
+```
+
+
+```{r}
+ggplot(MCPS_clean, aes(x = FARMS_rate, y = dropout_rate, color = grad_rate)) +
   geom_point(size = 3, alpha = 0.8) +
   geom_smooth(method = "lm", color = "black", se = FALSE) +
-  scale_color_gradient(low = "lightpink", high = "darkred") +
+  scale_color_gradient(low = "pink", high = "darkred") +
   labs(
     title = "FARMS vs Dropout (Colored by Graduation Rate)",
     x = "FARMS Rate",
@@ -289,6 +315,8 @@ ggplot(MCPS_clean, aes(x = FARMS_rate, y = grad_rate, color = total)) +
   ) +
   theme_minimal()
 ```
+
+
 
 ## Does education level relate to income?
 
@@ -339,7 +367,7 @@ ggplot(MD_clean |> arrange(median_income),
 ```{r}
 ggplot(MD_clean, aes(x = median_income, y = unemployment_rate, size = poverty_rate)) +
   geom_point(alpha = 0.7) +
-  geom_point(color = "purple")
+  geom_point(color = "purple")+
   labs(
     title = "Income vs Unemployment (Bubble = Poverty)"
   )
@@ -412,6 +440,24 @@ ggplot(cor_df, aes(Var1, Var2, fill = Freq)) +
   theme_minimal()
 ```
 
+
+```{r}
+ggplot(MCPS_clean,
+       aes(x = FARMS_rate,
+           y = grad_rate,
+           label = school)) +
+  geom_point(color = "darkblue", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  geom_text_repel(size = 3) +
+  labs(
+    title = "Schools Performing Above or Below Expectations",
+    x = "FARMS Rate",
+    y = "Graduation Rate"
+  ) +
+  theme_minimal()
+```
+
+
 ## 7. Regression models
 
 ```{r}
@@ -471,3 +517,4 @@ MCPS_model <- MCPS_model |>
 summary(MCPS_model)
 ```
 
+## 
